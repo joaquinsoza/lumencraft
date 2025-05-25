@@ -76,9 +76,19 @@
 <Notification />
 
 {#if $showDonate}
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+  <div 
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60"
+    on:click|self={closeDonatePopup}
+  >
     <div class="bg-white rounded-xl shadow-2xl p-8 max-w-xs w-full relative flex flex-col items-center">
-      <button class="absolute top-2 right-2 text-2xl text-gray-400 hover:text-gray-700" on:click={closeDonatePopup}>&times;</button>
+      <button 
+        type="button"
+        class="absolute -top-2 -right-2 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-lg text-gray-400 hover:text-gray-700 transition-colors"
+        on:click={closeDonatePopup}
+        aria-label="Close donation modal"
+      >
+        ×
+      </button>
       <h2 class="font-['Anton'] text-2xl text-[#002E5D] mb-2">Support the Server</h2>
       <p class="font-['Lora'] text-base text-[#0F0F0F] mb-4 text-center">Donations are very welcome and help keep the server running! All funds go directly to hosting costs.</p>
       {#if $qrDataUrl}
@@ -140,5 +150,10 @@
   .pixel-bg > * {
     position: relative;
     z-index: 1;
+  }
+
+  /* Ensure notifications appear above modal */
+  :global(.fixed.bottom-4.right-4) {
+    z-index: 60;
   }
 </style>
