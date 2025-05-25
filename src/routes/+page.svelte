@@ -79,6 +79,11 @@
   <div 
     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60"
     on:click|self={closeDonatePopup}
+    on:keydown|self={(e) => e.key === 'Escape' && closeDonatePopup()}
+    role="dialog"
+    aria-modal="true"
+    aria-label="Donation modal"
+    tabindex="0"
   >
     <div class="bg-white rounded-xl shadow-2xl p-8 max-w-xs w-full relative flex flex-col items-center">
       <button 
