@@ -50,8 +50,8 @@
       <h1 class="font-['Anton'] text-6xl md:text-8xl text-[#FDDA24] mb-6 tracking-wider">
         LUMENCRAFT
       </h1>
-      <p class="font-['Lora'] text-2xl md:text-3xl text-white mb-8">
-        Where Stellar Developers Build Together
+      <p class="font-['Lora'] text-2xl md:text-3xl text-white mb-4">
+        A Minecraft Server for the Stellar Community
       </p>
       <div class="flex flex-col items-center gap-4">
         <div class="flex flex-row gap-4 justify-center">
