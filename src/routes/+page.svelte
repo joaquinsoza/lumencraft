@@ -2,8 +2,11 @@
   import { onMount } from 'svelte';
   import Notification from '$lib/components/Notification.svelte';
   import { notifications } from '$lib/stores/notifications';
+  import QRCode from 'qrcode';
+  import { writable } from 'svelte/store';
   
   const SERVER_IP = 'lumencraft.xyz';
+  const STELLAR_ADDRESS = 'GAPPCK2C2MZ7AVKSXVAXSALMRDZ6ZRPKUZENFUP2YSDE5LMQQQETZQYJ';
 
   function copyToClipboard(text: string) {
     navigator.clipboard.writeText(text).then(() => {
@@ -12,7 +15,20 @@
       notifications.add('Failed to copy server IP', 'error');
     });
   }
-  
+
+  // Popup state
+  const showDonate = writable(false);
+  const qrDataUrl = writable('');
+
+  async function openDonatePopup() {
+    showDonate.set(true);
+    const url = await QRCode.toDataURL(STELLAR_ADDRESS, { width: 200, margin: 2, color: { dark: '#0F0F0F', light: '#fff' } });
+    qrDataUrl.set(url);
+  }
+  function closeDonatePopup() {
+    showDonate.set(false);
+  }
+
   onMount(() => {
     // Load fonts
     const link = document.createElement('link');
@@ -37,17 +53,41 @@
       <p class="font-['Lora'] text-2xl md:text-3xl text-white mb-8">
         Where Stellar Developers Build Together
       </p>
-      <button
-        on:click={() => copyToClipboard(SERVER_IP)}
-        class="bg-[#FDDA24] text-[#0F0F0F] px-8 py-4 rounded-lg inline-block font-['Lora'] font-semibold text-xl hover:bg-[#e6c520] transition-colors cursor-pointer"
-      >
-        {SERVER_IP}
-      </button>
+      <div class="flex flex-col items-center gap-4">
+        <div class="flex flex-row gap-4 justify-center">
+          <button
+            on:click={() => copyToClipboard(SERVER_IP)}
+            class="bg-[#FDDA24] text-[#0F0F0F] px-8 py-4 rounded-lg inline-block font-['Inter'] font-semibold text-xl hover:bg-[#e6c520] transition-colors cursor-pointer"
+          >
+            {SERVER_IP}
+          </button>
+          <button
+            on:click={openDonatePopup}
+            class="bg-[#B7ACE8] text-[#0F0F0F] px-6 py-4 rounded-lg inline-block font-['Inter'] font-semibold text-xl hover:bg-[#a49ad1] transition-colors cursor-pointer border border-[#FDDA24]"
+          >
+            Donate
+          </button>
+        </div>
+      </div>
     </div>
   </section>
 </main>
 
 <Notification />
+
+{#if $showDonate}
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+    <div class="bg-white rounded-xl shadow-2xl p-8 max-w-xs w-full relative flex flex-col items-center">
+      <button class="absolute top-2 right-2 text-2xl text-gray-400 hover:text-gray-700" on:click={closeDonatePopup}>&times;</button>
+      <h2 class="font-['Anton'] text-2xl text-[#002E5D] mb-2">Support the Server</h2>
+      <p class="font-['Lora'] text-base text-[#0F0F0F] mb-4 text-center">Donations are very welcome and help keep the server running! All funds go directly to hosting costs.</p>
+      {#if $qrDataUrl}
+        <img src="{$qrDataUrl}" alt="Stellar QR Code" class="mb-4 w-40 h-40 mx-auto cursor-pointer hover:opacity-80 transition-opacity" on:click={() => {navigator.clipboard.writeText(STELLAR_ADDRESS); notifications.add('Stellar address copied!', 'success');}} />
+      {/if}
+      <div class="font-['Inter'] text-xs text-[#002E5D] break-all mb-2 text-center cursor-pointer hover:underline" on:click={() => {navigator.clipboard.writeText(STELLAR_ADDRESS); notifications.add('Stellar address copied!', 'success');}}>{STELLAR_ADDRESS}</div>
+    </div>
+  </div>
+{/if}
 
 <style>
   :global(body) {
