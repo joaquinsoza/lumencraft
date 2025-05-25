@@ -82,9 +82,25 @@
       <h2 class="font-['Anton'] text-2xl text-[#002E5D] mb-2">Support the Server</h2>
       <p class="font-['Lora'] text-base text-[#0F0F0F] mb-4 text-center">Donations are very welcome and help keep the server running! All funds go directly to hosting costs.</p>
       {#if $qrDataUrl}
-        <img src="{$qrDataUrl}" alt="Stellar QR Code" class="mb-4 w-40 h-40 mx-auto cursor-pointer hover:opacity-80 transition-opacity" on:click={() => {navigator.clipboard.writeText(STELLAR_ADDRESS); notifications.add('Stellar address copied!', 'success');}} />
+        <button
+          type="button"
+          class="mb-4 w-40 h-40 mx-auto cursor-pointer hover:opacity-80 transition-opacity bg-transparent border-0 p-0"
+          on:click={() => {navigator.clipboard.writeText(STELLAR_ADDRESS); notifications.add('Stellar address copied!', 'success');}}
+          on:keydown={(e) => e.key === 'Enter' && (navigator.clipboard.writeText(STELLAR_ADDRESS), notifications.add('Stellar address copied!', 'success'))}
+          aria-label="Copy Stellar address to clipboard"
+        >
+          <img src="{$qrDataUrl}" alt="Stellar QR Code" class="w-full h-full" />
+        </button>
       {/if}
-      <div class="font-['Inter'] text-xs text-[#002E5D] break-all mb-2 text-center cursor-pointer hover:underline" on:click={() => {navigator.clipboard.writeText(STELLAR_ADDRESS); notifications.add('Stellar address copied!', 'success');}}>{STELLAR_ADDRESS}</div>
+      <button
+        type="button"
+        class="font-['Inter'] text-xs text-[#002E5D] break-all mb-2 text-center cursor-pointer hover:underline bg-transparent border-0 p-0 w-full"
+        on:click={() => {navigator.clipboard.writeText(STELLAR_ADDRESS); notifications.add('Stellar address copied!', 'success');}}
+        on:keydown={(e) => e.key === 'Enter' && (navigator.clipboard.writeText(STELLAR_ADDRESS), notifications.add('Stellar address copied!', 'success'))}
+        aria-label="Copy Stellar address to clipboard"
+      >
+        {STELLAR_ADDRESS}
+      </button>
     </div>
   </div>
 {/if}
