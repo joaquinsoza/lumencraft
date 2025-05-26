@@ -5,7 +5,7 @@
   import QRCode from 'qrcode';
   import { writable } from 'svelte/store';
   
-  const SERVER_IP = 'mc.lumencraft.xyz';
+  const SERVER_IP = 'play.lumencraft.xyz';
   const STELLAR_ADDRESS = 'GAPPCK2C2MZ7AVKSXVAXSALMRDZ6ZRPKUZENFUP2YSDE5LMQQQETZQYJ';
 
   function copyToClipboard(text: string) {
